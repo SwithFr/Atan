@@ -1,0 +1,20 @@
+doctype html
+html( lang="en" )
+  head
+    title Atan - Simple personalisable lazyloading library
+    link( rel="stylesheet", href="./css/sass/main.css" )
+    
+  body
+    h1 Atan
+    p Simple personalisable lazyloading library.
+    
+    section
+        h2 With delay
+        img.over( src="#", alt="Image displayed on over", data-src="http://lorempicsum.com/up/700/300/4", width="500" )
+    
+    section
+        h2 On click
+        img.click( src="#", alt="Image displayed on click", data-img="http://lorempicsum.com/up/700/300/4" )
+    
+    script( src="./js/atan.js" )
+    script( src="./js/main.js" )
