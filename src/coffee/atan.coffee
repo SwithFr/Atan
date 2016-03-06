@@ -34,16 +34,15 @@ Atan.prototype.parseConf = () ->
         this.parseEvent()
 
 Atan.prototype.parseEvent = () ->
-    this.targets = document.querySelectorAll( this.confs.targets )
-    this.event = this.confs.event
+    targets = this.targets = [].slice.call(document.querySelectorAll( this.confs.targets ))
 
-    if this.targets
-        for target in this.targets
-            this.intiEvent target, this.event
+    if targets
+        for target in targets
+            this.intiEvent target, this.confs.event
 
 Atan.prototype.parseEvents = ( conf, i ) ->
-    targets = this.targets[ i ] = document.querySelectorAll( conf.targets )
-    event = this.event[ i ] =  conf.event
+    targets = this.targets[ i ] = [].slice.call(document.querySelectorAll( conf.targets ))
+    event =  conf.event
 
     if targets.length != 0
         if event.type == "scroll"
@@ -57,29 +56,36 @@ Atan.prototype.loadAtScroll = ( targets, event, i ) ->
     h = window.innerHeight || document.clientHeight
 
     if event.loadIfVisible
-        this.loadAllVisible targets, h, i
+        this.loadAllVisible targets, h, event, i
 
     window.addEventListener "scroll", ( e ) ->
-        dh = h + document.body.scrollTop
-        a = -1
-        delay = event.options.delay || false
-
         for target in targets
             posY = target.getBoundingClientRect().top
 
-            if dh >= posY
-                that.loadImg target, that, i
+            if posY < h
+                that.runLoading target, event, i
+
     , false
 
-Atan.prototype.loadAllVisible = ( targets, h, i ) ->
+Atan.prototype.runLoading = ( target, event, i ) ->
+    delay = event.options && event.options.delay || false
+    that = this
+
+    if delay
+        window.setTimeout () ->
+            that.loadImg target, that, i
+        , delay
+    else
+        that.loadImg target, that, i
+
+Atan.prototype.loadAllVisible = ( targets, h, event, i ) ->
     that = this
 
     for target in targets
-        posY = target.offsetTop
+        posY = target.getBoundingClientRect().top
 
-        if h >= posY
-            that.loadImg target, that, i
-            # TODO: Remove loaded images
+        if posY < h
+            that.runLoading target, event, i
 
 # Initalise an event
 Atan.prototype.intiEvent = ( target, event, i ) ->
@@ -95,7 +101,23 @@ Atan.prototype.intiEvent = ( target, event, i ) ->
 # Load the image
 Atan.prototype.loadImg = ( target, that, i ) ->
     src = that.getSource( target, i )
-    target.src = src
+    if target.src != src
+        if that.confs[ i - 1 ].showLoader
+            target.src = './img/Loading.gif'
+            window.setTimeout () ->
+                target.src = src
+            , 200
+        else
+            target.src = src
+
+    this.removeTarget target, i
+    console.log this.targets
+
+Atan.prototype.removeTarget = ( target, i ) ->
+    if i
+        this.targets[ i ].splice this.targets[ i ].indexOf target, 1
+    else
+        this.targets.splice this.targets.indexOf target, 1
 
 # get the image source
 Atan.prototype.getSource = ( target, i ) ->
@@ -106,7 +128,4 @@ Atan.prototype.getSource = ( target, i ) ->
 
     src = conf.source.replace "data-", ""
 
-    if src != target.dataset[src]
-        return target.dataset[src]
-
-    return false
+    return target.dataset[src]

@@ -41,15 +41,13 @@ Atan.prototype.parseConf = function() {
 };
 
 Atan.prototype.parseEvent = function() {
-  var j, len, ref, results, target;
-  this.targets = document.querySelectorAll(this.confs.targets);
-  this.event = this.confs.event;
-  if (this.targets) {
-    ref = this.targets;
+  var j, len, results, target, targets;
+  targets = this.targets = [].slice.call(document.querySelectorAll(this.confs.targets));
+  if (targets) {
     results = [];
-    for (j = 0, len = ref.length; j < len; j++) {
-      target = ref[j];
-      results.push(this.intiEvent(target, this.event));
+    for (j = 0, len = targets.length; j < len; j++) {
+      target = targets[j];
+      results.push(this.intiEvent(target, this.confs.event));
     }
     return results;
   }
@@ -57,8 +55,8 @@ Atan.prototype.parseEvent = function() {
 
 Atan.prototype.parseEvents = function(conf, i) {
   var event, j, len, results, target, targets;
-  targets = this.targets[i] = document.querySelectorAll(conf.targets);
-  event = this.event[i] = conf.event;
+  targets = this.targets[i] = [].slice.call(document.querySelectorAll(conf.targets));
+  event = conf.event;
   if (targets.length !== 0) {
     if (event.type === "scroll") {
       return this.loadAtScroll(targets, event, i);
@@ -78,19 +76,16 @@ Atan.prototype.loadAtScroll = function(targets, event, i) {
   that = this;
   h = window.innerHeight || document.clientHeight;
   if (event.loadIfVisible) {
-    this.loadAllVisible(targets, h, i);
+    this.loadAllVisible(targets, h, event, i);
   }
   return window.addEventListener("scroll", function(e) {
-    var a, delay, dh, j, len, posY, results, target;
-    dh = h + document.body.scrollTop;
-    a = -1;
-    delay = event.options.delay || false;
+    var j, len, posY, results, target;
     results = [];
     for (j = 0, len = targets.length; j < len; j++) {
       target = targets[j];
       posY = target.getBoundingClientRect().top;
-      if (dh >= posY) {
-        results.push(that.loadImg(target, that, i));
+      if (posY < h) {
+        results.push(that.runLoading(target, event, i));
       } else {
         results.push(void 0);
       }
@@ -99,15 +94,28 @@ Atan.prototype.loadAtScroll = function(targets, event, i) {
   }, false);
 };
 
-Atan.prototype.loadAllVisible = function(targets, h, i) {
+Atan.prototype.runLoading = function(target, event, i) {
+  var delay, that;
+  delay = event.options && event.options.delay || false;
+  that = this;
+  if (delay) {
+    return window.setTimeout(function() {
+      return that.loadImg(target, that, i);
+    }, delay);
+  } else {
+    return that.loadImg(target, that, i);
+  }
+};
+
+Atan.prototype.loadAllVisible = function(targets, h, event, i) {
   var j, len, posY, results, target, that;
   that = this;
   results = [];
   for (j = 0, len = targets.length; j < len; j++) {
     target = targets[j];
-    posY = target.offsetTop;
-    if (h >= posY) {
-      results.push(that.loadImg(target, that, i));
+    posY = target.getBoundingClientRect().top;
+    if (posY < h) {
+      results.push(that.runLoading(target, event, i));
     } else {
       results.push(void 0);
     }
@@ -129,7 +137,26 @@ Atan.prototype.intiEvent = function(target, event, i) {
 Atan.prototype.loadImg = function(target, that, i) {
   var src;
   src = that.getSource(target, i);
-  return target.src = src;
+  if (target.src !== src) {
+    if (that.confs[i - 1].showLoader) {
+      target.src = './img/Loading.gif';
+      window.setTimeout(function() {
+        return target.src = src;
+      }, 200);
+    } else {
+      target.src = src;
+    }
+  }
+  this.removeTarget(target, i);
+  return console.log(this.targets);
+};
+
+Atan.prototype.removeTarget = function(target, i) {
+  if (i) {
+    return this.targets[i].splice(this.targets[i].indexOf(target, 1));
+  } else {
+    return this.targets.splice(this.targets.indexOf(target, 1));
+  }
 };
 
 Atan.prototype.getSource = function(target, i) {
@@ -140,8 +167,5 @@ Atan.prototype.getSource = function(target, i) {
     conf = this.confs;
   }
   src = conf.source.replace("data-", "");
-  if (src !== target.dataset[src]) {
-    return target.dataset[src];
-  }
-  return false;
+  return target.dataset[src];
 };

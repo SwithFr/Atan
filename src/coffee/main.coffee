@@ -5,6 +5,7 @@ atan = new Atan [
             "type": "mouseover" # Load the image on mouse over
         }
         "source": "data-src" # get the source in this attribute
+        "showLoader": true # Show a loader while image is loading
     },
     {
         "targets": ".click"
@@ -18,10 +19,8 @@ atan = new Atan [
         "event": {
             "type": "scroll",
             "loadIfVisible": true # If an image is on screen view load it
-            "options": {
-                "delay": 1000
-            }
         }
         "source": "data-scroll"
+        "showLoader": true
     }
 ]

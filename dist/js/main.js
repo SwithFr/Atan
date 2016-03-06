@@ -6,7 +6,8 @@ atan = new Atan([
     "event": {
       "type": "mouseover"
     },
-    "source": "data-src"
+    "source": "data-src",
+    "showLoader": true
   }, {
     "targets": ".click",
     "event": {
@@ -17,11 +18,9 @@ atan = new Atan([
     "targets": ".scroll",
     "event": {
       "type": "scroll",
-      "loadIfVisible": true,
-      "options": {
-        "delay": 1000
-      }
+      "loadIfVisible": true
     },
-    "source": "data-scroll"
+    "source": "data-scroll",
+    "showLoader": true
   }
 ]);
