@@ -13,5 +13,15 @@ atan = new Atan([
       "type": "click"
     },
     "source": "data-img"
+  }, {
+    "targets": ".scroll",
+    "event": {
+      "type": "scroll",
+      "loadIfVisible": true,
+      "options": {
+        "delay": 1000
+      }
+    },
+    "source": "data-scroll"
   }
 ]);
