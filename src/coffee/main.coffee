@@ -12,5 +12,16 @@ atan = new Atan [
             "type": "click"
         }
         "source": "data-img"
+    },
+    {
+        "targets": ".scroll"
+        "event": {
+            "type": "scroll",
+            "loadIfVisible": true # If an image is on screen view load it
+            "options": {
+                "delay": 1000
+            }
+        }
+        "source": "data-scroll"
     }
 ]
