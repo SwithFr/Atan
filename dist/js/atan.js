@@ -105,7 +105,7 @@ Atan.prototype.loadAllVisible = function(targets, h, i) {
   results = [];
   for (j = 0, len = targets.length; j < len; j++) {
     target = targets[j];
-    posY = target.getBoundingClientRect().top;
+    posY = target.offsetTop;
     if (h >= posY) {
       results.push(that.loadImg(target, that, i));
     } else {

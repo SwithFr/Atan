@@ -1,3 +1,7 @@
+//- Variables 
+- var limit = 10
+- var n = 0
+
 doctype html
 html( lang="en" )
   head
@@ -10,50 +14,25 @@ html( lang="en" )
     
     section
         h2 With mouse over
-        img.over( src="#", alt="Image displayed on over", data-src="http://lorempicsum.com/up/700/300/4", width="500" )
+        img.over( 
+            src="http://bert.art.yale.edu/~yotamhadar/loading/Loading-3.gif", 
+            alt="Image displayed on over", 
+            data-src="https://source.unsplash.com/category/people/800x300" )
     
     section
         h2 On click
-        img.click( src="#", alt="Image displayed on click", data-img="http://lorempicsum.com/up/700/300/4" )
+        img.click( 
+            src="http://bert.art.yale.edu/~yotamhadar/loading/Loading-3.gif", 
+            alt="Image displayed on click", 
+            data-img="https://source.unsplash.com/random/800x300" )
     
     section
         h2 On scroll
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/1" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/2" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/3" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/4" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/5" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/6" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/1" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/2" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/3" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/4" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/5" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/6" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/1" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/2" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/3" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/4" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/5" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/6" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/1" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/2" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/3" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/4" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/5" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/6" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/1" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/2" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/3" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/4" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/5" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/6" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/1" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/2" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/3" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/4" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/5" )
-        img.scroll( src="#", alt="Image displayed on scroll", data-scroll="http://lorempicsum.com/up/700/300/6" )
+        - for (var x = 1; x < 11; x++)
+            img.scroll( 
+                src="http://bert.art.yale.edu/~yotamhadar/loading/Loading-3.gif", 
+                alt="Image displayed on scroll",
+                data-scroll="./img/#{x}.jpg" )
     
     script( src="./js/atan.js" )
     script( src="./js/main.js" )

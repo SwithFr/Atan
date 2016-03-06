@@ -19,6 +19,7 @@ h2 {
   text-align: left; }
 
 img {
-  min-width: 100%;
+  max-width: 100%;
   object-fit: cover;
-  margin: 0 0 50px; }
+  margin: 0 auto 50px;
+  display: block; }

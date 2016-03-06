@@ -75,7 +75,7 @@ Atan.prototype.loadAllVisible = ( targets, h, i ) ->
     that = this
 
     for target in targets
-        posY = target.getBoundingClientRect().top
+        posY = target.offsetTop
 
         if h >= posY
             that.loadImg target, that, i
