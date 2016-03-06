@@ -41,7 +41,7 @@ Atan.prototype.parseEvent = () ->
 
     if targets
         for target in targets
-            this.intiEvent target, this.confs.event
+            this.initEvent target, this.confs.event
 
 Atan.prototype.parseEvents = ( conf, i ) ->
     targets = this.targets[ i ] = this._getTargets( conf.targets )
@@ -49,20 +49,20 @@ Atan.prototype.parseEvents = ( conf, i ) ->
 
     if targets.length != 0
         if event.type == "scroll"
-            this.loadAtScroll targets, event, i
+            this.loadAtScroll event, i
         else
             for target in targets
-                this.intiEvent target, event, i
+                this.initEvent target, event, i
 
-Atan.prototype.loadAtScroll = ( targets, event, i ) ->
+Atan.prototype.loadAtScroll = ( event, i ) ->
     that = this
     h = window.innerHeight || document.clientHeight
 
     if event.loadIfVisible
-        this.loadAllVisible targets, h, event, i
+        this.loadAllVisible h, event, i
 
     window.addEventListener "scroll", ( e ) ->
-        for target in targets
+        for target in this.targets[ i ]
             posY = target.getBoundingClientRect().top
 
             if posY < h
@@ -81,17 +81,17 @@ Atan.prototype.runLoading = ( target, event, i ) ->
     else
         that.loadImg target, that, i
 
-Atan.prototype.loadAllVisible = ( targets, h, event, i ) ->
+Atan.prototype.loadAllVisible = ( h, event, i ) ->
     that = this
 
-    for target in targets
+    for target in this.targets[ i ]
         posY = target.getBoundingClientRect().top
 
         if posY < h
             that.runLoading target, event, i
 
 # Initalise an event
-Atan.prototype.intiEvent = ( target, event, i ) ->
+Atan.prototype.initEvent = ( target, event, i ) ->
     type = event.type || "load"
     fn = event.function || this.loadImg
     that = this
@@ -114,7 +114,6 @@ Atan.prototype.loadImg = ( target, that, i ) ->
             target.src = src
 
     this.removeTarget target, i
-    console.log this.targets
 
 Atan.prototype.removeTarget = ( target, i ) ->
     if i

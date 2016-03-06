@@ -51,7 +51,7 @@ Atan.prototype.parseEvent = function() {
     results = [];
     for (j = 0, len = targets.length; j < len; j++) {
       target = targets[j];
-      results.push(this.intiEvent(target, this.confs.event));
+      results.push(this.initEvent(target, this.confs.event));
     }
     return results;
   }
@@ -63,30 +63,31 @@ Atan.prototype.parseEvents = function(conf, i) {
   event = conf.event;
   if (targets.length !== 0) {
     if (event.type === "scroll") {
-      return this.loadAtScroll(targets, event, i);
+      return this.loadAtScroll(event, i);
     } else {
       results = [];
       for (j = 0, len = targets.length; j < len; j++) {
         target = targets[j];
-        results.push(this.intiEvent(target, event, i));
+        results.push(this.initEvent(target, event, i));
       }
       return results;
     }
   }
 };
 
-Atan.prototype.loadAtScroll = function(targets, event, i) {
+Atan.prototype.loadAtScroll = function(event, i) {
   var h, that;
   that = this;
   h = window.innerHeight || document.clientHeight;
   if (event.loadIfVisible) {
-    this.loadAllVisible(targets, h, event, i);
+    this.loadAllVisible(h, event, i);
   }
   return window.addEventListener("scroll", function(e) {
-    var j, len, posY, results, target;
+    var j, len, posY, ref, results, target;
+    ref = this.targets[i];
     results = [];
-    for (j = 0, len = targets.length; j < len; j++) {
-      target = targets[j];
+    for (j = 0, len = ref.length; j < len; j++) {
+      target = ref[j];
       posY = target.getBoundingClientRect().top;
       if (posY < h) {
         results.push(that.runLoading(target, event, i));
@@ -111,12 +112,13 @@ Atan.prototype.runLoading = function(target, event, i) {
   }
 };
 
-Atan.prototype.loadAllVisible = function(targets, h, event, i) {
-  var j, len, posY, results, target, that;
+Atan.prototype.loadAllVisible = function(h, event, i) {
+  var j, len, posY, ref, results, target, that;
   that = this;
+  ref = this.targets[i];
   results = [];
-  for (j = 0, len = targets.length; j < len; j++) {
-    target = targets[j];
+  for (j = 0, len = ref.length; j < len; j++) {
+    target = ref[j];
     posY = target.getBoundingClientRect().top;
     if (posY < h) {
       results.push(that.runLoading(target, event, i));
@@ -127,7 +129,7 @@ Atan.prototype.loadAllVisible = function(targets, h, event, i) {
   return results;
 };
 
-Atan.prototype.intiEvent = function(target, event, i) {
+Atan.prototype.initEvent = function(target, event, i) {
   var fn, that, type;
   type = event.type || "load";
   fn = event["function"] || this.loadImg;
@@ -151,8 +153,7 @@ Atan.prototype.loadImg = function(target, that, i) {
       target.src = src;
     }
   }
-  this.removeTarget(target, i);
-  return console.log(this.targets);
+  return this.removeTarget(target, i);
 };
 
 Atan.prototype.removeTarget = function(target, i) {
