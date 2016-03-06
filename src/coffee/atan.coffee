@@ -33,15 +33,18 @@ Atan.prototype.parseConf = () ->
     else
         this.parseEvent()
 
+Atan.prototype._getTargets = ( target ) ->
+    return [].slice.call(document.querySelectorAll( target ))
+
 Atan.prototype.parseEvent = () ->
-    targets = this.targets = [].slice.call(document.querySelectorAll( this.confs.targets ))
+    targets = this.targets = this._getTargets( this.confs.targets )
 
     if targets
         for target in targets
             this.intiEvent target, this.confs.event
 
 Atan.prototype.parseEvents = ( conf, i ) ->
-    targets = this.targets[ i ] = [].slice.call(document.querySelectorAll( conf.targets ))
+    targets = this.targets[ i ] = this._getTargets( conf.targets )
     event =  conf.event
 
     if targets.length != 0
